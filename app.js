@@ -33,11 +33,10 @@ app.post('/generate-ikigai', async (req, res) => {
   ctx.fillText(data.sell, 380, 596);
   ctx.fillText(data.job, 308, 495);
   const buffer = canvas.toBuffer('image/png');
-  fs.writeFileSync('./public/image.png', buffer);
+  const imgName = `image-${getRandomInt(100)}`;
+  fs.writeFileSync(`./public/${imgName}.png`, buffer);
   res.json({
-    imgUrl: `https://pecha-kucha-mashi-mashi.herokuapp.com/image-${getRandomInt(
-      100
-    )}.png`,
+    imgUrl: `https://pecha-kucha-mashi-mashi.herokuapp.com/${imgName}.png`,
   });
 });
 
