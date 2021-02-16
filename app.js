@@ -32,7 +32,7 @@ app.post('/generate-ikigai', async (req, res) => {
   fs.writeFileSync('./public/image.png', buffer);
   res.json(
     JSON.stringify({
-      imgUrl: 'http://localhost:3000/image.png',
+      imgUrl: 'https://pecha-kucha-mashi-mashi.herokuapp.com/image.png',
     })
   );
 });
