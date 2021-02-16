@@ -11,6 +11,10 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 app.post('/generate-ikigai', async (req, res) => {
   const width = 1000;
   const height = 1000;
@@ -31,7 +35,9 @@ app.post('/generate-ikigai', async (req, res) => {
   const buffer = canvas.toBuffer('image/png');
   fs.writeFileSync('./public/image.png', buffer);
   res.json({
-    imgUrl: 'https://pecha-kucha-mashi-mashi.herokuapp.com/image.png',
+    imgUrl: `https://pecha-kucha-mashi-mashi.herokuapp.com/image-${getRandomInt(
+      100
+    )}.png`,
   });
 });
 
