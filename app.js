@@ -181,6 +181,26 @@ const drawPreferenceChart = ({
     '🎤'
   );
 
+  step += 50;
+
+  const { coffee, tea } = drink;
+  const drinkLeftWidth = (canvas.width / 2) * (coffee / (coffee + tea));
+  const drinkRightWidth = (canvas.width / 2) * (tea / (coffee + tea));
+  drawLeftBar(
+    centerX - drinkLeftWidth,
+    startingY + step,
+    drinkLeftWidth,
+    BAR_HEIGHT,
+    '☕️'
+  );
+  drawRightBar(
+    centerX + leftRightBarMargin,
+    startingY + step,
+    drinkRightWidth,
+    BAR_HEIGHT,
+    '🍵'
+  );
+
   // Draw the center vertical line
   ctx.beginPath();
   ctx.moveTo(centerX, 0);
