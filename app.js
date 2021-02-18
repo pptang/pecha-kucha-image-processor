@@ -3,8 +3,6 @@ const express = require('express');
 const { createCanvas, loadImage } = require('canvas');
 const admin = require('firebase-admin');
 
-const serviceAccount = require('./service-account-key.json');
-
 admin.initializeApp({
   credential: admin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
