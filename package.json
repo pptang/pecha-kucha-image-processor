@@ -16,6 +16,7 @@
   "dependencies": {
     "canvas": "^2.6.1",
     "express": "^4.17.1",
-    "firebase-admin": "^9.5.0"
+    "firebase-admin": "^9.5.0",
+    "node-canvas-with-twemoji": "^0.1.6"
   }
 }
