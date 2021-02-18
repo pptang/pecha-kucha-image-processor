@@ -32,7 +32,7 @@ const drawPreferenceChart = ({
   food,
   entertainment,
 }) => {
-  const canvas = document.getElementById('canvas');
+  const canvas = createCanvas(1280, 400);
   const ctx = canvas.getContext('2d');
   // Fill the background color for the whole image
   ctx.fillStyle = '#434343';
@@ -238,7 +238,7 @@ app.post('/generate-preference-chart', async (req, res) => {
   const imgUrl = drawPreferenceChart(updatedResult);
   // 5. Return the preference chart url
   res.json({
-    imgUrl: `https://pecha-kucha-mashi-mashi.herokuapp.com/${imgName}.png`,
+    imgUrl,
   });
 });
 
