@@ -30,16 +30,31 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-const drawPreferenceChart = async ({
-  alcohol,
-  sports,
-  place,
-  drink,
-  ball,
-  food,
-  entertainment,
-}) => {
-  const canvas = createCanvas(1280, 400);
+const emojiMap = {
+  tea: '🍵',
+  coffee: '☕️',
+  wine: '🍷',
+  beer: '🍺',
+  ski: '⛷',
+  snowboard: '🏂',
+  lion: '🦁',
+  sheep: '🐑',
+  dog: '🐶',
+  cat: '😸',
+  arrow: '🏹',
+  farmer: '👩‍🌾',
+  burger: '🍔',
+  sushi: '🍣',
+  mountain: '⛰',
+  sea: '🌊',
+  day: '🌞',
+  night: '🧛‍♂️',
+  gym: '🏋️‍♂️',
+  running: '🏃‍♀️',
+};
+
+const drawPreferenceChart = async (data) => {
+  const canvas = createCanvas(1280, 600);
   const ctx = canvas.getContext('2d');
   // Fill the background color for the whole image
   ctx.fillStyle = '#434343';
@@ -67,147 +82,34 @@ const drawPreferenceChart = async ({
   const BAR_HEIGHT = 40;
   const startingY = 20;
   const leftRightBarMargin = 1;
-  let step = 50;
-
-  const { basketball, tableTennis } = ball;
-  const ballLeftWidth =
-    (canvas.width / 2) * (basketball / (basketball + tableTennis));
-  const ballRightWidth =
-    (canvas.width / 2) * (tableTennis / (basketball + tableTennis));
-
-  await drawLeftBar(
-    centerX - ballLeftWidth,
-    startingY,
-    ballLeftWidth,
-    BAR_HEIGHT,
-    '🏀'
-  );
-  await drawRightBar(
-    centerX + leftRightBarMargin,
-    startingY,
-    ballRightWidth,
-    BAR_HEIGHT,
-    '🏓'
-  );
-
-  const { wine, whisky } = alcohol;
-  const alcoholLeftWidth = (canvas.width / 2) * (wine / (wine + whisky));
-  const alcoholRightWidth = (canvas.width / 2) * (whisky / (wine + whisky));
-  await drawLeftBar(
-    centerX - alcoholLeftWidth,
-    startingY + step,
-    alcoholLeftWidth,
-    BAR_HEIGHT,
-    '🍷'
-  );
-  await drawRightBar(
-    centerX + leftRightBarMargin,
-    startingY + step,
-    alcoholRightWidth,
-    BAR_HEIGHT,
-    '🥃'
-  );
-
-  step += 50;
-
-  const { running, gym } = sports;
-  const sportsLeftWidth = (canvas.width / 2) * (running / (running + gym));
-  const sportsRightWidth = (canvas.width / 2) * (gym / (running + gym));
-  await drawLeftBar(
-    centerX - sportsLeftWidth,
-    startingY + step,
-    sportsLeftWidth,
-    BAR_HEIGHT,
-    '🏃‍♀️'
-  );
-  await drawRightBar(
-    centerX + leftRightBarMargin,
-    startingY + step,
-    sportsRightWidth,
-    BAR_HEIGHT,
-    '🏋️‍♂️'
-  );
-
-  step += 50;
-
-  const { mountain, sea } = place;
-  const placeLeftWidth = (canvas.width / 2) * (mountain / (mountain + sea));
-  const placeRightWidth = (canvas.width / 2) * (gym / (mountain + sea));
-  await drawLeftBar(
-    centerX - placeLeftWidth,
-    startingY + step,
-    placeLeftWidth,
-    BAR_HEIGHT,
-    '🏔'
-  );
-  await drawRightBar(
-    centerX + leftRightBarMargin,
-    startingY + step,
-    placeRightWidth,
-    BAR_HEIGHT,
-    '🌊'
-  );
-
-  step += 50;
-
-  const { burrito, burger } = food;
-  const foodLeftWidth = (canvas.width / 2) * (burrito / (burrito + burger));
-  const foodRightWidth = (canvas.width / 2) * (burger / (burrito + burger));
-  await drawLeftBar(
-    centerX - foodLeftWidth,
-    startingY + step,
-    foodLeftWidth,
-    BAR_HEIGHT,
-    '🌯'
-  );
-  await drawRightBar(
-    centerX + leftRightBarMargin,
-    startingY + step,
-    foodRightWidth,
-    BAR_HEIGHT,
-    '🍔'
-  );
-
-  step += 50;
-
-  const { music, tv } = entertainment;
-  const entertainmentLeftWidth = (canvas.width / 2) * (music / (music + tv));
-  const entertainmentRightWidth = (canvas.width / 2) * (tv / (music + tv));
-  await drawLeftBar(
-    centerX - entertainmentLeftWidth,
-    startingY + step,
-    entertainmentLeftWidth,
-    BAR_HEIGHT,
-    '📺'
-  );
-  await drawRightBar(
-    centerX + leftRightBarMargin,
-    startingY + step,
-    entertainmentRightWidth,
-    BAR_HEIGHT,
-    '🎤'
-  );
-
-  step += 50;
-
-  const { coffee, tea } = drink;
-  const drinkLeftWidth = (canvas.width / 2) * (coffee / (coffee + tea));
-  const drinkRightWidth = (canvas.width / 2) * (tea / (coffee + tea));
-  await drawLeftBar(
-    centerX - drinkLeftWidth,
-    startingY + step,
-    drinkLeftWidth,
-    BAR_HEIGHT,
-    '☕️'
-  );
-  await drawRightBar(
-    centerX + leftRightBarMargin,
-    startingY + step,
-    drinkRightWidth,
-    BAR_HEIGHT,
-    '🍵'
-  );
-
+  let step = 0;
+  const preferences = Object.keys(data);
+  for (const preference of preferences) {
+    const resultArr = Object.keys(data[preference]);
+    const left = resultArr[0];
+    const right = resultArr[1];
+    const leftWeight = data[preference][left];
+    const rightWeight = data[preference][right];
+    const leftWidth =
+      (canvas.width / 2) * (leftWeight / (leftWeight + rightWeight));
+    const rightWidth =
+      (canvas.width / 2) * (rightWeight / (leftWeight + rightWeight));
+    await drawLeftBar(
+      centerX - leftWidth,
+      startingY + step,
+      leftWidth,
+      BAR_HEIGHT,
+      emojiMap[left]
+    );
+    await drawRightBar(
+      centerX + leftRightBarMargin,
+      startingY + step,
+      rightWidth,
+      BAR_HEIGHT,
+      emojiMap[right]
+    );
+    step += 50;
+  }
   // Draw the center vertical line
   ctx.beginPath();
   ctx.moveTo(centerX, 0);
@@ -216,31 +118,79 @@ const drawPreferenceChart = async ({
   ctx.stroke();
 
   const buffer = canvas.toBuffer('image/png');
-  const imgName = `image-${getRandomInt(100)}`;
+  const imgName = `image-${getRandomInt(5000)}`;
   fs.writeFileSync(`./public/${imgName}.png`, buffer);
   return `https://pecha-kucha-mashi-mashi.herokuapp.com/${imgName}.png`;
 };
 
 app.post('/generate-preference-chart', async (req, res) => {
   // 1. Get vote result
-  const { place, entertainment, sports, ball, drink, food, alcohol } = req.body;
+  const {
+    channelId,
+    drink,
+    alcohol,
+    winter,
+    manager,
+    communication,
+    working,
+    food,
+    place,
+    energy,
+    exercise,
+  } = req.body;
 
   // 2. Retrieve current preference in DB
 
-  const preferenceRef = db.collection('preference').doc('options');
+  const preferenceRef = db.collection('preference').doc(channelId);
   // 3. Update DB
-  await preferenceRef.update({
-    [`place.${place}`]: admin.firestore.FieldValue.increment(1),
-    [`entertainment.${entertainment}`]: admin.firestore.FieldValue.increment(1),
-    [`sports.${sports}`]: admin.firestore.FieldValue.increment(1),
-    [`ball.${ball}`]: admin.firestore.FieldValue.increment(1),
-    [`drink.${drink}`]: admin.firestore.FieldValue.increment(1),
-    [`food.${food}`]: admin.firestore.FieldValue.increment(1),
-    [`alcohol.${alcohol}`]: admin.firestore.FieldValue.increment(1),
+  await db.runTransaction(async (t) => {
+    const doc = await t.get(preferenceRef);
+    if (!doc.exists) {
+      t.set(preferenceRef, {
+        drink: {
+          coffee: 0,
+          tea: 0,
+        },
+        alcohol: { beer: 0, wine: 0 },
+        winter: { ski: 0, snowboard: 0 },
+        manager: { sheep: 0, lion: 0 },
+        communication: { cat: 0, dog: 0 },
+        working: { farmer: 0, arrow: 0 },
+        food: { sushi: 0, burger: 0 },
+        place: { sea: 0, mountain: 0 },
+        energy: { day: 0, night: 0 },
+        exercise: { running: 0, gym: 0 },
+      });
+      t.update(preferenceRef, {
+        [`drink.${drink}`]: 1,
+        [`alcohol.${alcohol}`]: 1,
+        [`winter.${winter}`]: 1,
+        [`manager.${manager}`]: 1,
+        [`communication.${communication}`]: 1,
+        [`working.${working}`]: 1,
+        [`food.${food}`]: 1,
+        [`place.${place}`]: 1,
+        [`energy.${energy}`]: 1,
+        [`exercise.${exercise}`]: 1,
+      });
+    } else {
+      t.update(preferenceRef, {
+        [`drink.${drink}`]: doc.data().drink[drink] + 1,
+        [`alcohol.${alcohol}`]: doc.data().alcohol[alcohol] + 1,
+        [`winter.${winter}`]: doc.data().winter[winter] + 1,
+        [`manager.${manager}`]: doc.data().manager[manager] + 1,
+        [`communication.${communication}`]:
+          doc.data().communication[communication] + 1,
+        [`working.${working}`]: doc.data().working[working] + 1,
+        [`food.${food}`]: doc.data().food[food] + 1,
+        [`place.${place}`]: doc.data().place[place] + 1,
+        [`energy.${energy}`]: doc.data().energy[energy] + 1,
+        [`exercise.${exercise}`]: doc.data().exercise[exercise] + 1,
+      });
+    }
   });
   const doc = await preferenceRef.get();
   const updatedResult = doc.data();
-
   // 4. Generate preference chart
   const imgUrl = await drawPreferenceChart(updatedResult);
   // 5. Return the preference chart url
