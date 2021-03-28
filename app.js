@@ -220,7 +220,6 @@ app.post('/generate-preference-chart', async (req, res) => {
     energy,
     exercise,
   } = req.body;
-  console.log({ body: req.body });
   // 2. Retrieve current preference in DB
 
   const preferenceRef = db.collection('preference').doc(channelId);
