@@ -201,6 +201,9 @@ const drawPreferenceChart = async (data) => {
 
   const buffer = canvas.toBuffer('image/png');
   const imgName = `image-${getRandomInt(5000)}`;
+  if (!fs.existsSync('./public')) {
+    fs.mkdirSync('./public');
+  }
   fs.writeFileSync(`./public/${imgName}.png`, buffer);
   return `https://pecha-kucha-mashi-mashi.herokuapp.com/${imgName}.png`;
 };
